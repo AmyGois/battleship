@@ -65,6 +65,30 @@ describe("Gameboard class creates objects with list of squares, 5 ships & info o
         "Invalid coordinates!"
       );
     });
+
+    test("Ships can automatically be placed at random locations on the board", () => {
+      const testBoard2 = new Gameboard();
+
+      function checkForShip(ship) {
+        for (let i = 0; i < 10; i++) {
+          for (let j = 0; j < 10; j++) {
+            if (testBoard2.board[i][j].ship === ship) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      }
+
+      testBoard2.placeShipsRandomly();
+
+      expect(checkForShip(testBoard2.ships.carrier)).toBe(true);
+      expect(checkForShip(testBoard2.ships.battleship)).toBe(true);
+      expect(checkForShip(testBoard2.ships.destroyer)).toBe(true);
+      expect(checkForShip(testBoard2.ships.submarine)).toBe(true);
+      expect(checkForShip(testBoard2.ships.patrolBoat)).toBe(true);
+    });
   });
 
   describe("Gameboard records attacks from opponent, and indicates when ships are hit & sunk", () => {
