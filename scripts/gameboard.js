@@ -100,6 +100,35 @@ class Gameboard {
     this.#placeShip(this.ships.patrolBoat, direction, x, y);
   }
 
+  #placeRandom(ship) {
+    try {
+      function getRandomDirection() {
+        const random = Math.floor(Math.random() * 2);
+
+        if (random === 0) {
+          return "horizontal";
+        } else {
+          return "vertical";
+        }
+      }
+      const randomDirection = getRandomDirection();
+      const randomX = Math.floor(Math.random() * 10);
+      const randomY = Math.floor(Math.random() * 10);
+
+      this.#placeShip(ship, randomDirection, randomX, randomY);
+    } catch (error) {
+      this.#placeRandom(ship);
+    }
+  }
+
+  placeShipsRandomly() {
+    this.#placeRandom(this.ships.carrier);
+    this.#placeRandom(this.ships.battleship);
+    this.#placeRandom(this.ships.destroyer);
+    this.#placeRandom(this.ships.submarine);
+    this.#placeRandom(this.ships.patrolBoat);
+  }
+
   receiveAttack(x, y) {
     if (x < 0 || x > this.board.length || y < 0 || y > this.board[0].length) {
       throw new Error(this.#errorMsgs.invalidCoordinates);
