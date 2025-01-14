@@ -1,5 +1,13 @@
+/* **************************************************************
+Contents:
+- Gameboard setup
+- Placing ships on the board
+- Managing attacks & hits
+- Error messages
+************************************************************** */
 import Ship from "./ship.js";
 
+/* - Gameboard setup */
 class Square {
   constructor() {
     this.ship = null;
@@ -40,6 +48,7 @@ class Gameboard {
     };
   }
 
+  /* - Placing ships on the board */
   #placeShip(ship, direction, x, y) {
     if (direction === "horizontal") {
       if (x < 0 || x > this.board.length) {
@@ -129,6 +138,7 @@ class Gameboard {
     this.#placeRandom(this.ships.patrolBoat);
   }
 
+  /* - Managing attacks & hits */
   receiveAttack(x, y) {
     if (x < 0 || x > this.board.length || y < 0 || y > this.board[0].length) {
       throw new Error(this.#errorMsgs.invalidCoordinates);
@@ -145,7 +155,7 @@ class Gameboard {
       this.board[x][y].ship.hit();
 
       if (this.board[x][y].ship.isSunk() === true) {
-        shipSunk = this.sunkMessage(this.board[x][y].ship);
+        shipSunk = this.#sunkMessage(this.board[x][y].ship);
         this.#shipsSunk += 1;
       }
     }
@@ -153,7 +163,7 @@ class Gameboard {
     return { square: this.board[x][y], shipSunk: shipSunk };
   }
 
-  sunkMessage(ship) {
+  #sunkMessage(ship) {
     switch (ship) {
       case this.ships.carrier:
         return "carrier";
@@ -178,6 +188,7 @@ class Gameboard {
     }
   }
 
+  /* - Error messages */
   #errorMsgs = {
     invalidCoordinates: "Invalid coordinates!",
     shipOverlap: "Ship can't be placed on top of another ship!",
