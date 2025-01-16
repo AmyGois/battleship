@@ -1,0 +1,108 @@
+/* **********************************************************************
+Contents:
+- General page styles
+- Main game UI
+********************************************************************** */
+/* - General page styles */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --background-colour-main: #e8e8e8;
+  --background-colour-contrast: #154e62;
+  --water-colour-main: #c9f1ff;
+  --water-colour-secondary: #a1d6e7;
+  --ship-colour: #8b9b9d;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+p,
+span {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1,
+footer,
+footer a {
+  color: var(--background-colour-main);
+}
+
+header,
+footer {
+  text-align: center;
+  background-color: var(--background-colour-contrast);
+}
+
+main {
+  flex: auto;
+  display: flex;
+  background-color: var(--background-colour-main);
+}
+
+footer {
+  padding: 1rem;
+}
+
+/* - Main game UI */
+section {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+section p {
+  font-size: 24px;
+  margin: 0;
+}
+
+.board {
+  width: 40vw;
+  height: 40vw;
+  background-color: blanchedalmond;
+  border: 1px solid #595959;
+  background-color: #595959;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 1px;
+}
+
+.board button {
+  border: none;
+  background-color: var(--water-colour-main);
+  padding: 0;
+}
+
+.board button:hover {
+  background-color: var(--water-colour-secondary);
+}
+
+.board button.has-ship {
+  background-color: var(--ship-colour);
+}
+
+button.is-hit {
+  background-image: url(./images/o.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: var(--water-colour-secondary);
+}
+
+button.has-ship.is-hit {
+  background-image: url(./images/x.svg);
+}
+
+.disabled {
+  pointer-events: none;
+}
