@@ -25,37 +25,37 @@ describe("Gameboard class creates objects with list of squares, 5 ships & info o
     });
 
     test("Gameboard can place carrier on board", () => {
-      testBoard.placeCarrier("horizontal", 1, 5);
-      expect(testBoard.board[1][5].ship).toBe(testBoard.ships.carrier);
-      expect(testBoard.board[1][9].ship).toBe(testBoard.ships.carrier);
+      testBoard.placeCarrier("horizontal", 5, 1);
+      expect(testBoard.board[5][1].ship).toBe(testBoard.ships.carrier);
+      expect(testBoard.board[9][1].ship).toBe(testBoard.ships.carrier);
     });
 
     test("Gameboard can place battleship on board", () => {
-      testBoard.placeBattleship("horizontal", 2, 5);
-      expect(testBoard.board[2][5].ship).toBe(testBoard.ships.battleship);
-      expect(testBoard.board[2][8].ship).toBe(testBoard.ships.battleship);
+      testBoard.placeBattleship("horizontal", 5, 2);
+      expect(testBoard.board[5][2].ship).toBe(testBoard.ships.battleship);
+      expect(testBoard.board[8][2].ship).toBe(testBoard.ships.battleship);
     });
 
     test("Gameboard can place destroyer on board", () => {
-      testBoard.placeDestroyer("horizontal", 3, 5);
-      expect(testBoard.board[3][5].ship).toBe(testBoard.ships.destroyer);
-      expect(testBoard.board[3][7].ship).toBe(testBoard.ships.destroyer);
+      testBoard.placeDestroyer("horizontal", 5, 3);
+      expect(testBoard.board[5][3].ship).toBe(testBoard.ships.destroyer);
+      expect(testBoard.board[7][3].ship).toBe(testBoard.ships.destroyer);
     });
 
     test("Gameboard can place submarine on board", () => {
-      testBoard.placeSubmarine("horizontal", 4, 5);
-      expect(testBoard.board[4][5].ship).toBe(testBoard.ships.submarine);
-      expect(testBoard.board[4][7].ship).toBe(testBoard.ships.submarine);
+      testBoard.placeSubmarine("horizontal", 5, 4);
+      expect(testBoard.board[5][4].ship).toBe(testBoard.ships.submarine);
+      expect(testBoard.board[7][4].ship).toBe(testBoard.ships.submarine);
     });
 
     test("Gameboard can place patrol boat on board", () => {
-      testBoard.placePatrolBoat("vertical", 1, 2);
-      expect(testBoard.board[1][2].ship).toBe(testBoard.ships.patrolBoat);
+      testBoard.placePatrolBoat("vertical", 2, 1);
+      expect(testBoard.board[2][1].ship).toBe(testBoard.ships.patrolBoat);
       expect(testBoard.board[2][2].ship).toBe(testBoard.ships.patrolBoat);
     });
 
     test("Ship can't be placed on square with other ship on it", () => {
-      expect(() => testBoard.placeBattleship("horizontal", 1, 5)).toThrow(
+      expect(() => testBoard.placeBattleship("horizontal", 5, 1)).toThrow(
         "Ship can't be placed on top of another ship!"
       );
     });
@@ -70,24 +70,25 @@ describe("Gameboard class creates objects with list of squares, 5 ships & info o
       const testBoard2 = new Gameboard();
 
       function checkForShip(ship) {
+        let count = 0;
         for (let i = 0; i < 10; i++) {
           for (let j = 0; j < 10; j++) {
             if (testBoard2.board[i][j].ship === ship) {
-              return true;
+              count++;
             }
           }
         }
 
-        return false;
+        return count;
       }
 
       testBoard2.placeShipsRandomly();
 
-      expect(checkForShip(testBoard2.ships.carrier)).toBe(true);
-      expect(checkForShip(testBoard2.ships.battleship)).toBe(true);
-      expect(checkForShip(testBoard2.ships.destroyer)).toBe(true);
-      expect(checkForShip(testBoard2.ships.submarine)).toBe(true);
-      expect(checkForShip(testBoard2.ships.patrolBoat)).toBe(true);
+      expect(checkForShip(testBoard2.ships.carrier)).toBe(5);
+      expect(checkForShip(testBoard2.ships.battleship)).toBe(4);
+      expect(checkForShip(testBoard2.ships.destroyer)).toBe(3);
+      expect(checkForShip(testBoard2.ships.submarine)).toBe(3);
+      expect(checkForShip(testBoard2.ships.patrolBoat)).toBe(2);
     });
   });
 
@@ -110,28 +111,28 @@ describe("Gameboard class creates objects with list of squares, 5 ships & info o
     });
 
     test("Attacks to all squares a ship is on sinks the ship", () => {
-      testBoard.receiveAttack(1, 2);
+      testBoard.receiveAttack(2, 1);
       expect(testBoard.receiveAttack(2, 2).shipSunk).toBe("patrol boat");
       expect(testBoard.ships.patrolBoat.isSunk()).toBe(true);
     });
 
     test("Gameboard records when all ships have been sunk", () => {
       expect(testBoard.allShipsSunk()).toBe(false);
-      testBoard.receiveAttack(1, 5);
-      testBoard.receiveAttack(1, 6);
-      testBoard.receiveAttack(1, 7);
-      testBoard.receiveAttack(1, 8);
-      testBoard.receiveAttack(1, 9);
-      testBoard.receiveAttack(2, 5);
-      testBoard.receiveAttack(2, 6);
-      testBoard.receiveAttack(2, 7);
-      testBoard.receiveAttack(2, 8);
-      testBoard.receiveAttack(3, 5);
-      testBoard.receiveAttack(3, 6);
-      testBoard.receiveAttack(3, 7);
-      testBoard.receiveAttack(4, 5);
-      testBoard.receiveAttack(4, 6);
-      testBoard.receiveAttack(4, 7);
+      testBoard.receiveAttack(5, 1);
+      testBoard.receiveAttack(6, 1);
+      testBoard.receiveAttack(7, 1);
+      testBoard.receiveAttack(8, 1);
+      testBoard.receiveAttack(9, 1);
+      testBoard.receiveAttack(5, 2);
+      testBoard.receiveAttack(6, 2);
+      testBoard.receiveAttack(7, 2);
+      testBoard.receiveAttack(8, 2);
+      testBoard.receiveAttack(5, 3);
+      testBoard.receiveAttack(6, 3);
+      testBoard.receiveAttack(7, 3);
+      testBoard.receiveAttack(5, 4);
+      testBoard.receiveAttack(6, 4);
+      testBoard.receiveAttack(7, 4);
       expect(testBoard.allShipsSunk()).toBe(true);
     });
   });

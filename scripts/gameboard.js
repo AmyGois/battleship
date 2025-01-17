@@ -50,13 +50,13 @@ class Gameboard {
 
   /* - Placing ships on the board */
   #placeShip(ship, direction, x, y) {
-    if (direction === "horizontal") {
-      if (x < 0 || x > this.board.length) {
+    if (direction === "vertical") {
+      if (x < 0 || x >= this.board.length) {
         throw new Error(this.#errorMsgs.invalidCoordinates);
       }
 
       for (let i = 0; i < ship.shipLength; i++) {
-        if (y + i < 0 || y + i > this.board[0].length) {
+        if (y + i < 0 || y + i >= this.board[0].length) {
           throw new Error(this.#errorMsgs.invalidCoordinates);
         }
 
@@ -68,13 +68,13 @@ class Gameboard {
       for (let i = 0; i < ship.shipLength; i++) {
         this.board[x][y + i].ship = ship;
       }
-    } else if (direction === "vertical") {
-      if (y < 0 || y > this.board[0].length) {
+    } else if (direction === "horizontal") {
+      if (y < 0 || y >= this.board[0].length) {
         throw new Error(this.#errorMsgs.invalidCoordinates);
       }
 
       for (let i = 0; i < ship.shipLength; i++) {
-        if (x + i < 0 || x + i > this.board.length) {
+        if (x + i < 0 || x + i >= this.board.length) {
           throw new Error(this.#errorMsgs.invalidCoordinates);
         }
 
@@ -83,7 +83,7 @@ class Gameboard {
         }
       }
 
-      for (let i = 0; i <= ship.shipLength; i++) {
+      for (let i = 0; i < ship.shipLength; i++) {
         this.board[x + i][y].ship = ship;
       }
     }
@@ -126,6 +126,7 @@ class Gameboard {
 
       this.#placeShip(ship, randomDirection, randomX, randomY);
     } catch (error) {
+      /* console.error(error); */
       this.#placeRandom(ship);
     }
   }
