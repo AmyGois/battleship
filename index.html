@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="./scripts/ui.js" type="module"></script>
   </head>
   <body>
     <header>
@@ -20,12 +21,12 @@
     <template id="setup"></template>
     <template id="game">
       <section>
-        <p>Your ships</p>
-        <div class="board disabled"></div>
+        <p id="player-msg">Your ships</p>
+        <div class="board disabled" id="player-board"></div>
       </section>
       <section>
-        <p>Enemy ships</p>
-        <div class="board"></div>
+        <p id="enemy-msg">Enemy ships</p>
+        <div class="board" id="enemy-board"></div>
       </section>
     </template>
   </body>
