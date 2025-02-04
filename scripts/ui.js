@@ -1,4 +1,4 @@
-import Player from "./player.js";
+import { Player, PlayerBot } from "./player.js";
 
 const ui = (() => {
   const render = {
@@ -74,6 +74,21 @@ const ui = (() => {
           ).textContent = `You sank the enemy's ${ship}!`;
         },
       },
+
+      playerBoard: {
+        emptySquare: () => {
+          document.querySelector("#player-msg").textContent = "Phew! Missed!";
+        },
+        shipHit: () => {
+          document.querySelector("#player-msg").textContent =
+            "Oh no! You've been hit!";
+        },
+        shipSunk: (ship) => {
+          document.querySelector(
+            "#player-msg"
+          ).textContent = `The enemy sank your ${ship}!`;
+        },
+      },
     },
   };
 
@@ -96,11 +111,38 @@ const ui = (() => {
       render.boardDisabed(enemyBoard);
     },
 
-    botHitSquare: () => {},
+    botHitSquare: (botPlayer, humanPlayer, humanBoard) => {
+      const coordinates = botPlayer.sendRandomAttack();
+      const squareInfo = humanPlayer.gameboard.receiveAttack(
+        coordinates.randomX,
+        coordinates.randomY
+      );
+
+      render.squareHit(humanBoard, coordinates.randomX, coordinates.randomY);
+      render.squareDisabled(
+        humanBoard,
+        coordinates.randomX,
+        coordinates.randomY
+      );
+      if (squareInfo.square.ship !== null) {
+        render.squareWithShip(
+          humanBoard,
+          coordinates.randomX,
+          coordinates.randomY
+        );
+        if (squareInfo.shipSunk === null) {
+          render.hitMessages.playerBoard.shipHit();
+        } else {
+          render.hitMessages.playerBoard.shipSunk(squareInfo.shipSunk);
+        }
+      } else {
+        render.hitMessages.playerBoard.emptySquare();
+      }
+    },
   };
 
   const addListeners = {
-    enemyBoard: (enemyBoard, enemyPlayer) => {
+    enemyBoard: (enemyBoard, enemyPlayer, humanPlayer, humanBoard) => {
       const squares = enemyBoard.querySelectorAll("button");
 
       squares.forEach((square) => {
@@ -112,7 +154,7 @@ const ui = (() => {
             Number(square.dataset.y)
           );
           setTimeout(() => {
-            gamePlay.botHitSquare();
+            gamePlay.botHitSquare(enemyPlayer, humanPlayer, humanBoard);
             render.boardEnabled(enemyBoard);
           }, 1000);
         });
@@ -124,15 +166,20 @@ const ui = (() => {
     newGame: (player, enemy) => {
       render.newEmptyGame();
       render.allShipsOnBoard(document.querySelector("#player-board"), player);
-      addListeners.enemyBoard(document.querySelector("#enemy-board"), enemy);
+      addListeners.enemyBoard(
+        document.querySelector("#enemy-board"),
+        enemy,
+        player,
+        document.querySelector("#player-board")
+      );
     },
   };
 
   return { init };
 })();
 
-const testPlayer = new Player("human");
-const computerPlayer = new Player("computer");
+const testPlayer = new Player();
+const computerPlayer = new PlayerBot();
 testPlayer.gameboard.placeShipsRandomly();
 computerPlayer.gameboard.placeShipsRandomly();
 
