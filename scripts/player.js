@@ -1,10 +1,31 @@
 import Gameboard from "./gameboard.js";
 
 class Player {
-  constructor(type) {
-    this.type = type;
+  constructor() {
     this.gameboard = new Gameboard();
   }
 }
 
-export default Player;
+class PlayerBot extends Player {
+  constructor() {
+    super();
+  }
+
+  #enemyBoard = new Gameboard();
+
+  sendRandomAttack() {
+    let randomX;
+    let randomY;
+
+    do {
+      randomX = Math.floor(Math.random() * 10);
+      randomY = Math.floor(Math.random() * 10);
+    } while (this.#enemyBoard.board[randomX][randomY].isHit === true);
+
+    this.#enemyBoard.board[randomX][randomY].isHit = true;
+
+    return { randomX, randomY };
+  }
+}
+
+export { Player, PlayerBot };
