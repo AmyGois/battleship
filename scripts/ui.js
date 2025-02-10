@@ -90,6 +90,31 @@ const ui = (() => {
         },
       },
     },
+
+    endGameCard: () => {
+      const main = document.querySelector("main");
+      const template = document.querySelector("#endgame");
+      const endGameUI = template.content.cloneNode(true);
+
+      main.appendChild(endGameUI);
+    },
+
+    endGameMessages: {
+      win: () => {
+        const endMsg = document.querySelector("#endgame-msg");
+        const winMsg = document.querySelector("#endgame-win-lose");
+
+        endMsg.textContent = "Congratulations! You sank all the enemy's ships!";
+        winMsg.textContent = "You win";
+      },
+      lose: () => {
+        const endMsg = document.querySelector("#endgame-msg");
+        const loseMsg = document.querySelector("#endgame-win-lose");
+
+        endMsg.textContent = "Alas! The enemy sank all your ships!";
+        loseMsg.textContent = "You lose";
+      },
+    },
   };
 
   const gamePlay = {
@@ -139,6 +164,18 @@ const ui = (() => {
         render.hitMessages.playerBoard.emptySquare();
       }
     },
+
+    endGame: (playerWins) => {
+      render.endGameCard();
+
+      if (playerWins === true) {
+        render.endGameMessages.win();
+      } else if (playerWins === false) {
+        render.endGameMessages.lose();
+      }
+
+      addListeners.newGameBtn();
+    },
   };
 
   const addListeners = {
@@ -153,13 +190,29 @@ const ui = (() => {
             Number(square.dataset.x),
             Number(square.dataset.y)
           );
-          setTimeout(() => {
-            gamePlay.botHitSquare(enemyPlayer, humanPlayer, humanBoard);
-            render.boardEnabled(enemyBoard);
-          }, 1000);
+
+          if (enemyPlayer.gameboard.allShipsSunk() === true) {
+            setTimeout(() => {
+              gamePlay.endGame(true);
+            }, 1000);
+          } else {
+            setTimeout(() => {
+              gamePlay.botHitSquare(enemyPlayer, humanPlayer, humanBoard);
+
+              if (humanPlayer.gameboard.allShipsSunk() === true) {
+                setTimeout(() => {
+                  gamePlay.endGame(false);
+                }, 1000);
+              } else {
+                render.boardEnabled(enemyBoard);
+              }
+            }, 1000);
+          }
         });
       });
     },
+
+    newGameBtn: () => {},
   };
 
   const init = {

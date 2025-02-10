@@ -2,6 +2,7 @@
 Contents:
 - General page styles
 - Main game UI
+- End of game & restart card
 ********************************************************************** */
 /* - General page styles */
 * {
@@ -105,4 +106,48 @@ button.has-ship.is-hit {
 
 .disabled {
   pointer-events: none;
+}
+
+/* - End of game & restart card */
+.endgame-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  background-color: #55555570;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.endgame-card {
+  background-color: var(--background-colour-main);
+  min-width: 50vw;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  margin: 16px;
+}
+
+.endgame-card p,
+.endgame-card button {
+  font-size: 24px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.endgame-card button {
+  padding: 12px 24px;
+  border: none;
+  background-color: var(--water-colour-secondary);
+}
+
+.endgame-card button:hover {
+  background-color: var(--background-colour-contrast);
+  color: var(--background-colour-main);
 }
