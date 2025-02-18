@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Battleship</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="./scripts/ui.js" type="module"></script>
+    <script src="./scripts/ui.js" type="module" defer></script>
   </head>
   <body>
     <header>
@@ -18,7 +18,83 @@
       <span>Created by <a href="https://github.com/AmyGois">Amy Gois</a></span>
     </footer>
 
-    <template id="setup"></template>
+    <template id="setup">
+      <section>
+        <p>Drag and drop your ships on to the board</p>
+        <div class="board"></div>
+      </section>
+      <section>
+        <div class="switch-holder">
+          <span>Horizontal —</span>
+          <label class="switch">
+            <input type="checkbox" id="ship-direction" />
+            <span class="slider round"></span>
+          </label>
+          <span>| Vertical</span>
+        </div>
+
+        <div class="carousel">
+          <div class="carousel-slides">
+            <div class="carousel-slide">
+              <p>Carrier</p>
+              <div
+                class="ship"
+                id="carrier"
+                draggable="true"
+                data-direction="horizontal"
+              ></div>
+            </div>
+            <div class="carousel-slide">
+              <p>Battleship</p>
+              <div
+                class="ship"
+                id="battleship"
+                draggable="true"
+                data-direction="horizontal"
+              ></div>
+            </div>
+            <div class="carousel-slide">
+              <p>Destroyer</p>
+              <div
+                class="ship"
+                id="destroyer"
+                draggable="true"
+                data-direction="horizontal"
+              ></div>
+            </div>
+            <div class="carousel-slide">
+              <p>Submarine</p>
+              <div
+                class="ship"
+                id="submarine"
+                draggable="true"
+                data-direction="horizontal"
+              ></div>
+            </div>
+            <div class="carousel-slide">
+              <p>Patrol boat</p>
+              <div
+                class="ship"
+                id="patrolboat"
+                draggable="true"
+                data-direction="horizontal"
+              ></div>
+            </div>
+          </div>
+
+          <button class="carousel-previousBtn">
+            <img src="./images/arrow_back.svg" alt="Previous slide" />
+          </button>
+          <button class="carousel-nextBtn">
+            <img src="./images/arrow_forward.svg" alt="Next slide" />
+          </button>
+          <div class="carousel-radioBtns"></div>
+        </div>
+
+        <button id="start-game-btn" class="hidden">Play game</button>
+      </section>
+    </template>
+
     <template id="game">
       <section>
         <p id="player-msg">Your ships</p>
@@ -29,12 +105,13 @@
         <div class="board" id="enemy-board"></div>
       </section>
     </template>
+
     <template id="endgame">
       <div class="endgame-frame">
         <div class="endgame-card">
           <p id="endgame-msg"></p>
           <p id="endgame-win-lose"></p>
-          <button>Play again</button>
+          <button id="play-again-btn">Play again</button>
         </div>
       </div>
     </template>
